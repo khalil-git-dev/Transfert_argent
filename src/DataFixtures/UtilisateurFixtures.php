@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Profile;
 use App\Entity\Utilisateur;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,16 +18,39 @@ class UtilisateurFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $user = new Utilisateur();
+        $supAdmin = new Profile();
+        $supAdmin->setLibelle("ROLE_SUP_ADMIN");
+        $manager->persist($supAdmin);
 
-        // $user->setNom("diop");
-        // $user->setPrenom("khalil");
+        $Admin = new Profile();
+        $Admin->setLibelle("ROLE_ADMIN");
+        $manager->persist($Admin);
+
+        $Caissier = new Profile();
+        $Caissier->setLibelle("ROLE_CAISSIER");
+        $manager->persist($Caissier);
+
+        $manager->flush();
+
+        $this->addReference('role_sup_admin', $supAdmin);
+        $this->addReference('role_admin', $Admin);
+        $this->addReference('role_caissier', $Caissier);
+
+        $rolAdmin = $this->getReference('role_sup_admin');
+        $rolSupAdmin = $this->getReference('role_admin');
+        $rolCaissier = $this->getReference('role_caissier');
+        
+        $user = new Utilisateur();
+        // // $user->setNom("diop");
+        // // $user->setPrenom("khalil");
+        // $user->setRoles(json_encode(array("SUPER_ADMIN")));
         $user->setEmail("khalildiop@gmail.com");
         $user->setPassword($this->passwordEncoder->encodePassword($user, "diop_12345"));
-        $user->setRoles(json_encode(array("SUPER_ADMIN")));
-        $user->setRole();
-        
+        $user->setRoles(["ROLE_SUP_ADMIN", "ROLE_ADMIN", "ROLE_CAISSIER"]);
+        $user->setRole($rolAdmin);
+
         $manager->persist($user);
         $manager->flush();
     }
+
 }
