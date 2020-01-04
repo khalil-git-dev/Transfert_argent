@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @Route("/api")
+ */
 class UtilisateurController extends AbstractController
 {
     /**
@@ -25,7 +28,7 @@ class UtilisateurController extends AbstractController
     public function login(Request $request)
     {
         $user = new Utilisateur();
-        $user = $this->getUtilisateur();
+        //$user = $this->getUtilisateur();
         return $this->json([
             'email' => $user->getEmail(),
             'roles' => $user->getRoles()

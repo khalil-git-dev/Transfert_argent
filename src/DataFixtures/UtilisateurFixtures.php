@@ -44,8 +44,8 @@ class UtilisateurFixtures extends Fixture
         // // $user->setNom("diop");
         // // $user->setPrenom("khalil");
         // $user->setRoles(json_encode(array("SUPER_ADMIN")));
-        $user->setEmail("khalildiop@gmail.com");
-        $user->setPassword($this->passwordEncoder->encodePassword($user, "diop_12345"));
+        $user->setEmail("khalil@gmail.com");
+        $user->setPassword($this->passwordEncoder->encodePassword($user, "khalil"));
         $user->setRoles(["ROLE_SUP_ADMIN", "ROLE_ADMIN", "ROLE_CAISSIER"]);
         $user->setRole($rolAdmin);
 

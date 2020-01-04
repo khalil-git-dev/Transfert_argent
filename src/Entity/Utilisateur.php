@@ -79,7 +79,7 @@ class Utilisateur implements UserInterface
         return array_unique($roles);
     }
 
-    public function setRoles($roles): self
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
