@@ -5,12 +5,41 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @ApiResource()
+ * collectionOperations={
+ *          "get"={"security"="is_Granted(['ROLE_SUP_ADMIN','ROLE_SUP_ADMIN'])",
+ *          "normalisation_context"={"group"={"get"}},
+ *      },
+ *           "CreateAdmin"={
+ *           "method"="POST",
+ *           "path"="/api/utilisateurs",
+ *              "security"="is_Granted('ROLE_SUP_ADMIN')",
+ *              "security_message"="Acces refuse. Seul Admin System peut creer un admin"
+ *      },
+ *           "CreateCaissier"={
+ *           "method"="POST",
+ *           "path"="/api/utilisateurs",
+ *              "security"="is_Granted(['ROLE_SUP_ADMIN','ROLE_ADMIN'])",
+ *              "security_message"="Acces refuse. Seul Admin Systeme ou Admin peuvent creer un caissier"
+ *      },
+ *      itemOperations={
+ *          "get"={
+ *              "path"="/utilisateurs/{id}",
+ *              "security"="is_Granted('ROLE_SUP_ADMIN')",
+ *              "normalisation_context"={"group"={"get"}}
+ *          },
+ *           "put"={
+ *              "path"="/api/utilisateurs/{id}",
+ *              "security"="is_Granted('ROLE_SUP_ADMIN')",
+ *              "security_message"="Acces refuse. Seul Admin System peut bloquer un admin"
+ *           }
+ *      }
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
  */
-class Utilisateur implements UserInterface
+class Utilisateur implements AdvancedUserInterface
 {
     /**
      * @ORM\Id()
@@ -39,6 +68,11 @@ class Utilisateur implements UserInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Profile", inversedBy="utilisateurs")
      */
     private $role;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isActive;
 
     public function getId(): ?int
     {
@@ -129,4 +163,35 @@ class Utilisateur implements UserInterface
 
         return $this;
     }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(?bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+
+            ########  Pour le bloquage des utilisateurs  #########
+
+    public function isAccountNonExpired(){
+        return true;
+    }
+    public function isAccountNonLocked(){
+        return true;
+    }
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+    public function isEnabled(){
+        return $this->isActive;
+    }
+        
+        
 }

@@ -4,7 +4,9 @@ security:
             algorithm: auto
 
     role_hierarchy:
-        ROLE_ADMIN: ROLE_USER
+        ROLE_SUP_ADMIN: [ROLE_SUP_ADMIN, ROLE_ADMIN, ROLE_USER]
+        ROLE_ADMIN: [ROLE_ADMIN, ROLE_USER]
+        ROLE_CAISSIER: [ROLE_USER]
     
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -45,9 +47,12 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+
+    ###     Gestion des controles d'access      ###
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
-        - {path: ^api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - {path: ^api/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - {  path :  ^ / ,  roles :  ROLE_USER  }
+         - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/profile, roles: ROLE_USER }
+         - {path: ^api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - {path: ^api/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         

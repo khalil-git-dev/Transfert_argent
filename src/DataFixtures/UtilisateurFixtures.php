@@ -41,9 +41,7 @@ class UtilisateurFixtures extends Fixture
         $rolCaissier = $this->getReference('role_caissier');
         
         $user = new Utilisateur();
-        // // $user->setNom("diop");
-        // // $user->setPrenom("khalil");
-        // $user->setRoles(json_encode(array("SUPER_ADMIN")));
+        
         $user->setEmail("khalil@gmail.com");
         $user->setPassword($this->passwordEncoder->encodePassword($user, "khalil"));
         $user->setRoles(["ROLE_SUP_ADMIN", "ROLE_ADMIN", "ROLE_CAISSIER"]);
